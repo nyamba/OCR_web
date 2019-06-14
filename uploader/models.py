@@ -78,6 +78,10 @@ class OCRText(models.Model):
     def __str__(self):
         return "{0:03d} - {1}".format(self.id, self.image.internal_reference)
 
+    @property
+    def char_count(self):
+        return len(self.text)
+
     class Meta:
         verbose_name = "OCRText"
         verbose_name_plural = "OCRTexts"

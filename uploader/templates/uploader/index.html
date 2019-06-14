@@ -86,7 +86,7 @@ function show_text(txt){
             {% with image.ocrtext_set.last as ocrtext%}
 	    <td class="d-none d-sm-table-cell">{{ocrtext.execution_time}}s</td>
             <td class="d-none d-md-table-cell">
-		    <p>lang: {{ocrtext.lang}} |config: {{ocrtext.config}} | {{image.internal_reference}}</p>
+		    <p>lang: {{ocrtext.lang}} | config: {{ocrtext.config}} | char count: {{ ocrtext.char_count }} | {{image.internal_reference}}</p>
 		    {{ ocrtext.text|truncatechars:350}}
 		    <a href="#" onclick="show_text('{{ocrtext.text|escapejs}}')">more</a>
 	    </td>
