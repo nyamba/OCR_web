@@ -48,6 +48,14 @@ function show_text(txt){
 <div class="offset-md-2 col-md-8 my-5" id="image_form">
     <form action="#image_form" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        <div class="form-group">
+            <label>Config</label>
+            <input type="text" class="form-control" value="" name="config"/>
+        </div>
+        <div class="form-group">
+            <label>Lang</label>
+            <input type="text" value="mon" class="form-control" name="lang"/>
+        </div>
         <fieldset class="form-group">
             <div class="custom-file my-2">
                 {{image_form.image|add_class:"custom-file-input"}}
@@ -66,8 +74,7 @@ function show_text(txt){
         <thead>
         <tr>
             <th scope="col" class="text-center">#</th>
-            <th scope="col" class="d-none d-sm-table-cell">Internal Reference</th>
-            <th scope="col" class="d-none d-sm-table-cell">Time (seconds)</th>
+            <th scope="col" class="d-none d-sm-table-cell">Time</th>
             <th scope="col" class="d-none d-md-table-cell">OCR Text</th>
             <th scope="col" class="text-center">Image</th>
         </tr>
@@ -76,10 +83,10 @@ function show_text(txt){
         {% for image in image_list %}
         <tr>
             <th scope="row">{{image.id}}</th>
-            <td class="d-none d-sm-table-cell">{{image.internal_reference}}</td>
             {% with image.ocrtext_set.last as ocrtext%}
-	    <td class="d-none d-sm-table-cell">{{ocrtext.execution_time}}</td>
+	    <td class="d-none d-sm-table-cell">{{ocrtext.execution_time}}s</td>
             <td class="d-none d-md-table-cell">
+		    <p>lang: {{ocrtext.lang}} |config: {{ocrtext.config}} | {{image.internal_reference}}</p>
 		    {{ ocrtext.text|truncatechars:350}}
 		    <a href="#" onclick="show_text('{{ocrtext.text|escapejs}}')">more</a>
 	    </td>

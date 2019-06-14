@@ -9,7 +9,9 @@ def home(request):
     image_form = ImageFileForm(request.POST or None, request.FILES or None)
     if image_form.is_valid():
         image = image_form.save()
-        image.execute_and_save_ocr()
+        config = request.POST.get('config', '')
+        lang = request.POST.get('lang', '')
+        image.execute_and_save_ocr(config, lang)
         redirect('home')
 
     image_list = ImageFile.objects.all().order_by('-id')

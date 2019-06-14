@@ -26,14 +26,14 @@ class ImageFile(models.Model):
     def __str__(self):
         return "{0:03d} - {1}".format(self.id, self.image)
 
-    def execute_and_save_ocr(self):
+    def execute_and_save_ocr(self, config, lang):
         import time
         start_time = time.time()
 
         img = Image.open(self.image)
-        txt = pytesseract.image_to_string(img, lang='mon')
+        txt = pytesseract.image_to_string(img, lang=lang, config=config)
         execution_time = time.time() - start_time
-        ocr_txt = OCRText(image = self, text = txt, lang = "EN", execution_time = execution_time)
+        ocr_txt = OCRText(image=self, text=txt, lang=lang, config=config, execution_time = execution_time)
         ocr_txt.save()
 
         print("The image {0} was opened.".format(self.image))
@@ -69,6 +69,7 @@ class ImageFile(models.Model):
 class OCRText(models.Model):
     text = models.TextField("OCR text", blank=True)
     lang = models.TextField("Language", default="EN")
+    config = models.TextField("OCR config", default="")
     execution_time = models.IntegerField("Execution Time", editable=False, null=True);
     image = models.ForeignKey('ImageFile', on_delete=models.CASCADE)
     create_at = models.DateTimeField("Create at", auto_now_add=True)
