@@ -28,6 +28,11 @@ function show_img_details(img_path){
     $('#img_detail_modal').modal('toggle');
 }
 
+function show_text(txt){
+	$('#txtarea').val(txt);
+	$('#txt_detail_modal').modal('toggle');
+}
+
 
 </script>
 
@@ -62,6 +67,7 @@ function show_img_details(img_path){
         <tr>
             <th scope="col" class="text-center">#</th>
             <th scope="col" class="d-none d-sm-table-cell">Internal Reference</th>
+            <th scope="col" class="d-none d-sm-table-cell">Time (seconds)</th>
             <th scope="col" class="d-none d-md-table-cell">OCR Text</th>
             <th scope="col" class="text-center">Image</th>
         </tr>
@@ -72,11 +78,15 @@ function show_img_details(img_path){
             <th scope="row">{{image.id}}</th>
             <td class="d-none d-sm-table-cell">{{image.internal_reference}}</td>
             {% with image.ocrtext_set.last as ocrtext%}
-            <td class="d-none d-md-table-cell">{{ ocrtext.text|truncatechars:350}}</td>
+	    <td class="d-none d-sm-table-cell">{{ocrtext.execution_time}}</td>
+            <td class="d-none d-md-table-cell">
+		    {{ ocrtext.text|truncatechars:350}}
+		    <a href="#" onclick="show_text('{{ocrtext.text|escapejs}}')">more</a>
+	    </td>
             {% endwith%}
             <td class="text-center">
-                <div class="clickable_img"  onclick="show_img_details('/media/{{image.image}}')">
-                    <img class="img-fluid img-thumbnail " src="/media/{{image.image}}" alt="{{image.image}}" width="100" />
+		    <div class="clickable_img"  onclick="show_img_details('/ocr_web/media/{{image.image}}')">
+			<img class="img-fluid img-thumbnail " src="/ocr_web/media/{{image.image}}" alt="{{image.image}}" width="100" />
                 </div>
             </td>
         </tr>
@@ -86,8 +96,8 @@ function show_img_details(img_path){
 </div>
 
 
-<div id="img_detail_modal" class="modal mt-5" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<div id="img_detail_modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -96,6 +106,21 @@ function show_img_details(img_path){
             </div>
             <div class="modal-body">
                 <img id="img_detail" class="img-fluid" src="" alt="" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="txt_detail_modal" class="modal" tabindex="-1" role="dialog">	
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <textarea type="text"  id="txtarea" style="width:100%; height:800px;border: 1px solid #ccc;"></textarea>
             </div>
         </div>
     </div>

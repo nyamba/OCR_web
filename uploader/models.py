@@ -31,7 +31,7 @@ class ImageFile(models.Model):
         start_time = time.time()
 
         img = Image.open(self.image)
-        txt = pytesseract.image_to_string(img, lang='eng')
+        txt = pytesseract.image_to_string(img, lang='mon')
         execution_time = time.time() - start_time
         ocr_txt = OCRText(image = self, text = txt, lang = "EN", execution_time = execution_time)
         ocr_txt.save()
