@@ -23,6 +23,10 @@ class ImageFile(models.Model):
     create_at = models.DateTimeField("Create at", auto_now_add=True)
     updated_at = models.DateTimeField("Update at", auto_now=True)
 
+    @property
+    def image_size(self):
+        return int(self.image.file.size/1024)
+
     def __str__(self):
         return "{0:03d} - {1}".format(self.id, self.image)
 
